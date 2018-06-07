@@ -1,8 +1,8 @@
 require_relative 'card'
+require_relative 'settings'
 
 class Deck
-  SUITS = %i[hearts diamonds clubs spaders].freeze
-  VALUES = %w[2 3 4 5 6 7 8 9 10 J Q K A].freeze
+  include Settings
   attr_accessor :cards
 
   def initialize
