@@ -10,7 +10,7 @@ class Hand
   end
 
   def sort_by_value
-    @cards.flatten!.sort_by! do |card|
+    @cards = @cards.flatten!.sort_by! do |card|
       VALUES.index(card.value)
     end
   end
@@ -21,5 +21,6 @@ class Hand
     @cards.each do |card|
       @value += card.points @value
     end
+    @value
   end
 end
