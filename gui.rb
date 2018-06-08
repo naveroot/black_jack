@@ -11,16 +11,22 @@ module GUI
     player_name
   end
 
-  def game_info
-    print 'Ваши карты: '
-    player_cards(@player)
-    player_value(@player)
-    player_cash(@player)
-    actions_menu
+  def border
+    puts '======================================'
+    yield if block_given?
+    puts '======================================'
+  end
+
+  def game_info(player)
+    viability  = player.is_a?(Dealer) ? false : true
+      print "Карты #{player.name}: "
+      player_cards(player, viability)
+      player_value(player, viability)
+      player_cash(player)
   end
 
   def player_cash(player)
-    puts "У вас #{player.cash}$"
+    puts "Кэш: #{player.cash}$"
   end
 
   def player_value(player, show_value = true)
@@ -35,9 +41,9 @@ module GUI
     end
   end
 
-  def actions_menu
+  def actions_menu(player)
     puts '1: Пропустить'
     puts '2: Открыть карты'
-    puts '3: Добавить карту' if @player.hand.cards.size < 3
+    puts '3: Добавить карту' if player.hand.cards.size < 3
   end
 end

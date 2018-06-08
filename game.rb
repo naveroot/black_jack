@@ -19,6 +19,6 @@ class Game
   end
 
   def tern
-    game_info
+    border { @players.each { |player| game_info(player) } }
   end
 end
