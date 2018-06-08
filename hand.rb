@@ -9,8 +9,14 @@ class Hand
     @value = 0
   end
 
+  def add_cards(cards)
+    @cards << cards
+    @cards.flatten!
+    count_value
+  end
+
   def sort_by_value
-    @cards = @cards.flatten!.sort_by! do |card|
+    @cards = @cards.sort_by! do |card|
       VALUES.index(card.value)
     end
   end

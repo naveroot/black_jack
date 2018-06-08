@@ -7,4 +7,8 @@ class Player
     @hand = Hand.new
   end
 
+  def bet(sum)
+    @cash -= sum
+    sum
+  end
 end

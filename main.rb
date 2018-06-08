@@ -6,9 +6,9 @@ require_relative 'game'
 require_relative 'settings'
 require_relative 'gui'
 
-Game.new
-
-
+game = Game.new
+game.start
+game.tern
 # hand = Hand.new
 # deck = Deck.new
 # hand.cards << deck.pick_a_card(4)
