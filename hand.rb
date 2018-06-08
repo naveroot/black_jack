@@ -9,7 +9,12 @@ class Hand
     @value = 0
   end
 
+  def size
+    @cards.size
+  end
+
   def add_cards(cards)
+    raise ERRORS[:max_cards] if @cards.size > 3
     @cards << cards
     @cards.flatten!
     count_value

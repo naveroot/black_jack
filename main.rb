@@ -8,10 +8,5 @@ require_relative 'gui'
 
 game = Game.new
 game.start
-game.tern
-# hand = Hand.new
-# deck = Deck.new
-# hand.cards << deck.pick_a_card(4)
-# p hand
-# hand.count_value
-# p hand.value
+game.next_tern
+game.open_cards

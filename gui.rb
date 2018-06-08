@@ -17,16 +17,24 @@ module GUI
     puts '======================================'
   end
 
-  def game_info(player)
-    viability  = player.is_a?(Dealer) ? false : true
-      print "Карты #{player.name}: "
-      player_cards(player, viability)
-      player_value(player, viability)
-      player_cash(player)
+  def bank_show
+    puts "В банке: #{@bank}$"
   end
 
-  def player_cash(player)
-    puts "Кэш: #{player.cash}$"
+  def game_info(players: @players,
+                cash: true,
+                dealers_card: false,
+                dealers_value: false)
+    players.each do |player|
+      print "Карты #{player.name}: "
+      player_cards(player, !player.is_a?(Dealer) || dealers_card)
+      player_value(player, !player.is_a?(Dealer) || dealers_value)
+      player_cash(player, cash)
+    end
+  end
+
+  def player_cash(player, show_cash = true)
+    puts "Кэш: #{show_cash ? player.cash : '??'}$"
   end
 
   def player_value(player, show_value = true)
