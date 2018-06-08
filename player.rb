@@ -10,6 +10,10 @@ class Player
     @hand = Hand.new
   end
 
+  def drop_hand
+    @hand.clear
+  end
+
   def bet(sum)
     @cash -= sum
     sum
@@ -19,7 +23,7 @@ class Player
     @hand.size >= 3
   end
 
-  def tern
+  def tern_choice
     puts '1: Пропустить'
     puts '2: Открыть карты'
     puts '3: Добавить карту' if @hand.cards.size < 3

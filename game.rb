@@ -6,13 +6,10 @@ class Game
   include Settings
 
   def initialize
-    @deck = Deck.new
     @players = []
     @player_name = new_player_name
     @players << Player.new(@player_name) << Dealer.new
     @bank = 0
-    @open_cards = false
-    @game_over = false
     @view_config = { all:         { players: @players,
                                     cash: true,
                                     dealers_card: true,
@@ -24,7 +21,11 @@ class Game
   end
 
   def start
+    greetings
+    @deck = Deck.new
+    @game_over = false
     @players.each do |player|
+      player.drop_hand
       player.hand.add_cards @deck.pick_a_card(2)
       @bank += player.bet(10)
     end
@@ -48,13 +49,12 @@ class Game
   end
 
   def game_over?(player)
-    p @players.map(&:max_cards?).uniq
-    player.hand.value > 21 || @players.map(&:max_cards?).uniq.eql?(true)
+    player.hand.value > 21
   end
 
   def player_tern
     @players.each do |player|
-      case player.tern
+      case player.tern_choice
       when 1
         next
       when 2

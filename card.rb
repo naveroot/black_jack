@@ -10,7 +10,7 @@ class Card
   end
 
   def ace_value(points)
-    points > 9 ? 1 : 11
+    points > 10 ? 1 : 11
   end
 
   def points(points)

@@ -13,6 +13,10 @@ class Hand
     @cards.size
   end
 
+  def clear
+    @cards = []
+  end
+
   def add_cards(cards)
     raise ERRORS[:max_cards] if @cards.size > 3
     @cards << cards
