@@ -5,17 +5,33 @@ module GUI
   end
 
   def winner_greetings(players)
-    print "Победитель "
+    print 'Победитель '
     players.each { |player| print player.name.to_s + ' ' }
     puts "забирает банк #{@bank}$"
   end
 
+  def game_over
+    border { puts '    Game Over    ' }
+  end
+
+  def new_game?
+    puts 'Начать новую игру? y/n'
+    choice = gets.chomp
+    raise Settings::ERRORS[:wrong_choice] unless %w[y n].include? choice
+    choice == 'y'
+  rescue RuntimeError => error
+    puts error.message
+    retry
+  end
+
   def new_player_name
-    error_message = 'Имя не может быть пустым!'
     puts 'Введите свое имя:'
     player_name = gets.chomp
-    raise error_message if player_name.nil? || player_name.empty?
+    raise Settings::ERRORS[:empty_name] if player_name.nil? || player_name.empty?
     player_name
+  rescue RuntimeError => error
+    puts error.message
+    retry
   end
 
   def border
@@ -25,21 +41,20 @@ module GUI
   end
 
   def continue?
-    puts 'Хотите продолжить? (y/n)'
+    puts 'Хотите продолжить? y/n'
     choice = gets.chomp
-    # raise ERRORS[:wrong_choice] if choice != 'y' || choice != 'n'
-    choice != 'y'
-    # rescue StandardError => error
-    #   puts error.message
-    #   retry
+    raise Settings::ERRORS[:wrong_choice] unless %w[y n].include? choice
+    choice == 'n'
+  rescue RuntimeError => error
+    error.message
+    retry
   end
 
   def bank_show
     puts "В банке: #{@bank}$"
   end
 
-  def game_info(players: @players,
-                cash: true,
+  def game_info(cash: true,
                 dealers_card: false,
                 dealers_value: false)
     @players.each do |player|
