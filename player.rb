@@ -10,6 +10,10 @@ class Player
     @hand = Hand.new
   end
 
+  def buy_back
+    @cash = Settings::START_CASH
+  end
+
   def drop_hand
     @hand.clear
   end
@@ -21,6 +25,10 @@ class Player
 
   def max_cards?
     @hand.size >= 3
+  end
+
+  def bankrupt?
+    @cash.zero?
   end
 
   def tern_choice

@@ -4,6 +4,15 @@ module Settings
   START_CASH = 100
   MAX_CARDS = 3
   ERRORS = {
-      max_cards: 'В руке слишком много карт!'
-  }
+    max_cards: 'В руке слишком много карт!',
+    wrong_choice: 'Введите y или n'
+  }.freeze
+  VIEW_CONFIG = { all:         { players: @players,
+                                 cash: true,
+                                 dealers_card: true,
+                                 dealers_value: true },
+                  player_only: { players: @players,
+                                 cash: true,
+                                 dealers_card: false,
+                                 dealers_value: false } }.freeze
 end

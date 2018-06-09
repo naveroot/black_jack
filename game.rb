@@ -7,21 +7,31 @@ class Game
 
   def initialize
     @players = []
+    border { greetings }
     @player_name = new_player_name
     @players << Player.new(@player_name) << Dealer.new
     @bank = 0
-    @view_config = { all:         { players: @players,
-                                    cash: true,
-                                    dealers_card: true,
-                                    dealers_value: true },
-                     player_only: { players: @players,
-                                    cash: true,
-                                    dealers_card: false,
-                                    dealers_value: false } }
   end
 
   def start
-    greetings
+    until game_over?
+      border do
+        reset_game
+        make_bets
+        tern
+        open_cards
+        select_winner
+      end
+    end
+  end
+
+  protected
+
+  def game_over?
+    @players.map(&:bankrupt?).any? || continue?
+  end
+
+  def reset_game
     @deck = Deck.new
     @game_over = false
     @players.each do |player|
@@ -31,25 +41,34 @@ class Game
     end
   end
 
-  def open_cards
-    @winer = select_winer
-    @winer.cash += @bank
-    @bank = 0
-    border do
-      puts "Winer: #{@winer.name}"
-      border do
-        game_info @view_config[:all]
-      end
+  def make_bets
+    @players.each do |player|
+      @bank += player.bet(10)
     end
   end
 
-  def select_winer
-    players_by_value = @players.sort_by { |player| player.hand.value }
-    players_by_value.select { |player| player.hand.value < 22 }.last
+  def open_cards
+    border do
+      game_info VIEW_CONFIG[:all]
+    end
   end
 
-  def game_over?(player)
-    player.hand.value > 21
+  def select_winner
+    players_values = @players.map { |player| player.hand.value }
+    players_values.select! { |values| values < 22 }
+    player_max_value = players_values.max
+    winners = @players.select { |player| player.hand.value == player_max_value }
+    winner_greetings winners
+    take_bank winners
+  end
+
+  def take_bank(winners)
+    winners.each { |winner| winner.cash += @bank / winners.size }
+    @bank = 0
+  end
+
+  def tern_over?(player)
+    player.hand.value > 21 || @players.map(&:max_cards?).all?
   end
 
   def player_tern
@@ -64,19 +83,16 @@ class Game
         player.hand.add_cards @deck.pick_a_card(1)
       end
 
-      if game_over?(player)
+      if tern_over?(player)
         @game_over = true
         break
       end
     end
-  rescue StandardError => error
-    puts error.message
-    retry
   end
 
-  def next_tern
+  def tern
     until @game_over
-      border { game_info @view_config[:player_only] }
+      border { game_info VIEW_CONFIG[:player_only] }
       bank_show
       player_tern
     end

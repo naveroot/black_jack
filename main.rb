@@ -7,8 +7,4 @@ require_relative 'settings'
 require_relative 'gui'
 
 game = Game.new
-loop do
-  game.start
-  game.next_tern
-  game.open_cards
-end
+game.start

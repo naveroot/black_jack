@@ -1,6 +1,13 @@
+require_relative 'settings'
 module GUI
   def greetings
     puts 'Добро пожаловать в игру black-jack'
+  end
+
+  def winner_greetings(players)
+    print "Победитель "
+    players.each { |player| print player.name.to_s + ' ' }
+    puts "забирает банк #{@bank}$"
   end
 
   def new_player_name
@@ -17,6 +24,16 @@ module GUI
     puts '======================================'
   end
 
+  def continue?
+    puts 'Хотите продолжить? (y/n)'
+    choice = gets.chomp
+    # raise ERRORS[:wrong_choice] if choice != 'y' || choice != 'n'
+    choice != 'y'
+    # rescue StandardError => error
+    #   puts error.message
+    #   retry
+  end
+
   def bank_show
     puts "В банке: #{@bank}$"
   end
@@ -25,7 +42,7 @@ module GUI
                 cash: true,
                 dealers_card: false,
                 dealers_value: false)
-    players.each do |player|
+    @players.each do |player|
       print "Карты #{player.name}: "
       player_cards(player, !player.is_a?(Dealer) || dealers_card)
       player_value(player, !player.is_a?(Dealer) || dealers_value)
@@ -53,5 +70,10 @@ module GUI
     puts '1: Пропустить'
     puts '2: Открыть карты'
     puts '3: Добавить карту' if player.hand.cards.size < 3
+  end
+
+  def press_any_key
+    print 'Press ENTER to continue'
+    gets
   end
 end
