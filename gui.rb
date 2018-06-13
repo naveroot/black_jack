@@ -5,6 +5,16 @@ module GUI
   end
 
   def winner_greetings(players)
+    players.size > 1 ? draw(players) : one_winner(players)
+  end
+
+  def draw(players)
+    print 'Ничья! '
+    players.each { |player| print player.name.to_s + ' ' }
+    puts 'делят банк между собой'
+  end
+
+  def one_winner(players)
     print 'Победитель '
     players.each { |player| print player.name.to_s + ' ' }
     puts "забирает банк #{@bank}$"
