@@ -27,7 +27,7 @@ class Game
     border do
       reset_game
       make_bets
-      tern
+      turn
       open_cards
       select_winner
     end
@@ -52,7 +52,7 @@ class Game
     end
   end
 
-  def tern
+  def turn
     until @game_over
       border { game_info VIEW_CONFIG[:player_only] }
       bank_show
@@ -71,7 +71,7 @@ class Game
       when :add_card
         player.hand.add_cards @deck.pick_a_card(1)
       else
-        raise Settings:ERRORS[:wrong_argument]
+        raise Settings::ERRORS[:wrong_argument]
       end
 
       if turn_over?(player)
@@ -200,6 +200,7 @@ class Game
     puts '1: Пропустить'
     puts '2: Открыть карты'
     puts '3: Добавить карту' if player.hand.cards.size < 3
+    gets.to_i
   end
 
   def press_any_key
