@@ -4,7 +4,7 @@ class Dealer < Player
     super 'Dealer'
   end
 
-  def tern_choice
-    @hand.value < 17 ? 3 : 1
+  def turn_choice
+    @hand.value < 17 ? :add_card : :skip_tern
   end
 end

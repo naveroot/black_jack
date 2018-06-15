@@ -6,7 +6,8 @@ module Settings
     max_cards: 'В руке слишком много карт!',
     wrong_choice: 'Введите y или n',
     empty_name: 'Имя не может быть пустым!',
-    wrong_number: 'Введите корректное число'
+    wrong_number: 'Введите корректное число',
+    wrong_argument: 'Несуществующее действие'
   }.freeze
   VIEW_CONFIG = { all:         { cash: true,
                                  dealers_card: true,
