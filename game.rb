@@ -62,9 +62,23 @@ class Game
     end
   end
 
+  def turn_choice(player)
+    case actions_menu(player)
+    when 1
+      return :skip_turn
+    when 2
+      return :open_cards
+    when 3
+      return :add_card
+    end
+  rescue RuntimeError => error
+    puts error.message
+    retry
+  end
+
   def player_turn
     @players.each do |player|
-      case player.turn_choice
+      case player_choice(player)
       when :skip_turn
         next
       when :open_cards
@@ -80,6 +94,14 @@ class Game
         @game_over = true
         break
       end
+    end
+  end
+
+  def player_choice(player)
+    if player.is_a? Dealer
+      player.hand.value < 17 ? :add_card : :skip_turn
+    else
+      turn_choice(player)
     end
   end
 
